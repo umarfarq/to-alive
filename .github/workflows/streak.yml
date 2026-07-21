@@ -1,1 +1,27 @@
 
+
+name: Daily GitHub Streak Saver
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # Runs every day at 9:00 AM UTC
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  make-contribution:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make changes to dummy file
+        run: |
+          echo "$(date)" > daily_log.txt
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add daily_log.txt
+          git commit -m "Automated daily contribution [skip ci]"
+          git push
